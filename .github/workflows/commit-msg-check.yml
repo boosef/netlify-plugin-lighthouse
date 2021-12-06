@@ -1,0 +1,21 @@
+name: 'Commit Message Check'
+on:
+  push:
+    branches:
+      - main
+      - 'releases/*'
+
+jobs:
+  check-commit-message:
+    name: Check Commit Message
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Commit Message
+        uses: gsactions/commit-message-checker@v1
+        with:
+          pattern: '^\[AB#[0-9]+\] .+$'
+          error: 'The commit must start with the AWI id, like AB#123.'
+          excludeDescription: 'true' # optional: this excludes the description body of a pull request
+          excludeTitle: 'true' # optional: this excludes the title of a pull request
+          checkAllCommitMessages: 'true' # optional: this checks all commits associated with a pull request
+          accessToken: ${{ secrets.GITHUB_TOKEN }} # github access token is only required if checkAllCommitMessages is true
